@@ -11,8 +11,10 @@ build/
 .DS_Store
 .env
 
-# 제출용: 문서/Postman 제외 (Docker 초기화용 docs/sql 만 포함)
+# 제출용: 문서/Postman 제외 (Docker용 docs/sql + 전이 API 명세만 포함)
 docs/**
 !docs/sql/
 !docs/sql/**
+!docs/api/
+!docs/api/transition-api.md
 postman/
