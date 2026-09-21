@@ -1,0 +1,18 @@
+target/
+build/
+.gradle/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+*.log
+.DS_Store
+.env
+
+# 제출용: 문서/Postman 제외 (Docker 초기화용 docs/sql 만 포함)
+docs/**
+!docs/sql/
+!docs/sql/**
+postman/

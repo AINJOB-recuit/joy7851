@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ainjob-mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ainjob
+      MYSQL_USER: ainjob
+      MYSQL_PASSWORD: ainjob
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ainjob_mysql_data:/var/lib/mysql
+      - ./docs/sql/00_charset.sql:/docker-entrypoint-initdb.d/00_charset.sql:ro
+      - ./docs/sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./docs/sql/02_seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # 로컬 SMTP 수신함 (실제 외부 메일 없이 알림 검증)
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: ainjob-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+
+volumes:
+  ainjob_mysql_data:
